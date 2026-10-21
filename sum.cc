@@ -5,17 +5,8 @@
 
 int main() {
     std::ifstream inputFile("data.txt");
-    if (!inputFile) {
-        std::cerr << "Error: Could not open 'data.txt'" << std::endl;
-        return 1;
-    }
 
     std::ofstream outputFile("sums.txt");
-    if (!outputFile) {
-        std::cerr << "Error: Could not create or open 'sums.txt'" << std::endl;
-        inputFile.close();
-        return 1;
-    }
 
     std::string currentLine;
     int lineCount = 0;
@@ -27,7 +18,7 @@ int main() {
 
         if (ss >> num1 >> num2) {
             double sum = num1 + num2;
-            outputFile << "Line " << lineCount << " Sum: " << sum << std::endl;
+            outputFile << sum << std::endl;
         } else { continue; }
     }
 

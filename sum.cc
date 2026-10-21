@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
+#include <sstream> 
 
 int main() {
     std::ifstream inputFile("data.txt");

@@ -16,10 +16,7 @@ int main() {
         double sum = 0.0;
 
         for (int i = 0; i < n; ++i) {
-            if (!(inputFile >> block[i])) {
-                std::cerr << "Error" << j + 1 << std::endl;
-                return 1;
-            }
+            inputFile >> block[i];
             sum += block[i];
         }
 

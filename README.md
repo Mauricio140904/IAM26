@@ -6,3 +6,4 @@ Fork this repository, enable the workflows in the *Actions* tab of your fork, an
 ## Exercise sheets
 
 - [Sheet 1](sheet_01.md)
+- [Sheet 2](sheet_02.md)

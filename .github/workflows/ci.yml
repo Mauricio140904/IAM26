@@ -28,3 +28,48 @@ jobs:
           ./sum
           awk '{ print $1 + $2 }' data.txt > expected.txt
           diff -u expected.txt sums.txt
+
+  sheet-2-exercise-1-samples:
+    runs-on: ubuntu-latest
+    env:
+      LC_ALL: C
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile sample.cc
+        run: g++ -std=c++17 -Wall -Wextra -Werror sample.cc -o sample
+      - name: Check mean, variance and standard deviation
+        run: |
+          awk '{ print $1 + $2 }' data.txt > sums.txt
+          ./sample | tee output.txt
+          read -r mean var sigma < <(awk '{ s += $1; q += $1 * $1; n++ }
+            END { m = s / n; v = q / n - m * m; print m, v, sqrt(v) }' sums.txt)
+          for x in "$mean" "$var" "$sigma"; do
+            grep -oE '[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?' output.txt |
+              awk -v x="$x" 'function abs(y) { return y < 0 ? -y : y }
+                abs($1 - x) <= 1e-3 * abs(x) { found = 1 }
+                END { if (!found) { print "expected value " x " not found in output"; exit 1 } }'
+          done
+
+  sheet-2-exercise-2-small-samples:
+    runs-on: ubuntu-latest
+    env:
+      LC_ALL: C
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile sample2.cc
+        run: g++ -std=c++17 -Wall -Wextra -Werror sample2.cc -o sample2
+      - name: Check means and variances of nine numbers
+        run: |
+          awk '{ print $1 + $2 }' data.txt > sums.txt
+          ./sample2
+          # expected: mean, variance with 1/N and with 1/(N-1) for each block of nine
+          awk '{ s += $1; q += $1 * $1; n++ }
+            n == 9 { m = s / n; v = q / n - m * m; print m, v, v * n / (n - 1); s = q = n = 0 }' sums.txt > expected.txt
+          [[ $(wc -l < expected.txt) -eq 26 ]]
+          paste -d' ' expected.txt means.txt variances.txt |
+            awk 'function abs(y) { return y < 0 ? -y : y }
+              function near(a, b) { return abs(a - b) <= 1e-3 * abs(b) + 1e-6 }
+              NF != 5 { print "line " NR ": missing value"; bad = 1; next }
+              !near($4, $1) { print "line " NR ": mean " $4 " != " $1; bad = 1 }
+              !near($5, $2) && !near($5, $3) { print "line " NR ": variance " $5 " != " $2 " (or " $3 ")"; bad = 1 }
+              END { if (NR != 26) { print "expected 26 lines, got " NR; bad = 1 }; exit bad }'

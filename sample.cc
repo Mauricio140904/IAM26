@@ -27,4 +27,6 @@ int main() {
     double standardDeviation = std::sqrt(variance);
     std::cout << "Standard Deviation: " << standardDeviation << std::endl;
     
+    inputFile.close();
+    inputFile2.close();
 }

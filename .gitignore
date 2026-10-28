@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# Compiler- und Debug-Dateien ignorieren
+*.ilk
+*.pdb
+
+# VS Code Einstellungen ignorieren (optional, aber meistens gewollt)
+.vscode/

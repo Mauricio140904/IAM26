@@ -7,3 +7,5 @@ int main() {
     std::ifstream inputFile("sums.txt");
     
 }
+
+Hallo mauri

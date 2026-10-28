@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
+
 
 int main() {
     std::ifstream inputFile("sums.txt");

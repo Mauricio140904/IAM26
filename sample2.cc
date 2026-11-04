@@ -60,6 +60,20 @@ int main() {
     double corrected_variance = overall_variance * bessel_correction;
     std::cout << "Corrected variance: " << corrected_variance << "\n";
 
+    meanInput.clear();
+    meanInput.seekg(0);
+
+    double squared_deviation_sum = 0.0;
+    for (int j = 0; j < total_runs; ++j) {
+        double mean;
+        meanInput >> mean;
+        squared_deviation_sum += std::pow(mean - overall_mean, 2);
+    }
+
+    double standard_deviation_of_means = std::sqrt(squared_deviation_sum / (total_runs - 1));
+
+    std::cout << "Standard Deviation of means: " << standard_deviation_of_means << "\n";
+
     inputFile.close();
     meanInput.close();
     varianceInput.close();

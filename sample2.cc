@@ -31,7 +31,32 @@ int main() {
         varianceFile << variance << "\n";
     }
 
-    inputFile.close();
     meanFile.close();
     varianceFile.close();
+
+    std::ifstream meanInput("means.txt");
+    std::ifstream varianceInput("variances.txt");
+
+    double overall_mean = 0.0;
+    for (int j = 0; j < total_runs; ++j) {
+        double mean;
+        meanInput >> mean;
+        overall_mean += mean;
+    }
+    overall_mean /= total_runs;
+
+    double overall_variance = 0.0;
+    for (int j = 0; j < total_runs; ++j) {
+        double variance;
+        varianceInput >> variance;
+        overall_variance += variance;
+    }
+    overall_variance /= total_runs;
+
+    std::cout << "Overall mean of means: " << overall_mean << "\n";
+    std::cout << "Overall mean of variances: " << overall_variance << "\n";
+
+    inputFile.close();
+    meanInput.close();
+    varianceInput.close();
 }

@@ -6,7 +6,7 @@
 
 We will try to use freely available online tools for these exercises where possible. The exercises are provided in the GitHub repository <https://github.com/stadie/IAM26>.\
 Open the link and click *Fork* (top right) to create your own copy of the repository, owned by your GitHub account. In your fork, open the *Actions* tab and click *I understand my workflows, go ahead and enable them*, so that your solutions are checked automatically after each push. Your fork is public. When new exercises are added, update your fork with *Sync fork* on its GitHub page. Post the URL of your fork on Moodle so that we can look at your solutions.\
-With <https://replit.com/> you can get an integrated development environment (IDE) in your browser. Log in with your GitHub account and import your fork. If you want to work locally, clone your fork:
+With a *GitHub Codespace* you get an integrated development environment (IDE) in your browser: on the GitHub page of your fork click *Code*, *Codespaces*, *Create codespace on main*. This opens VS Code with your fork and with g++, ROOT and Python already installed. The first start takes a few minutes. Later, you find your Codespace again under *Code*, *Codespaces*. If you want to work locally instead, clone your fork:
 
 ``` bash
 git clone https://github.com/<your-username>/IAM26.git
@@ -22,14 +22,14 @@ int main() {
 }
 ```
 
-Compile and execute the program in the terminal window on the (lower) right:
+Compile and execute the program in the terminal at the bottom of the window (if there is none, open it with *Terminal*, *New Terminal*):
 
 ``` bash
 g++ hello.cc -o hello
 ./hello
 ```
 
-Before your first commit, tell git your name and the e-mail address of your GitHub account (only once per computer):
+In a Codespace git already knows who you are. When working locally, tell git your name and the e-mail address of your GitHub account before your first commit (only once per computer):
 
 ``` bash
 git config --global user.name "Your Name"
@@ -43,7 +43,7 @@ git commit -m"first attempt" hello.cc
 git push
 ```
 
-You will be asked for your GitHub account name and your [personal access token, which you have to create on GitHub beforehand](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). In <https://replit.com/> you can also use the *Version control* tab on the left side of the screen.
+In a Codespace you are already logged in to GitHub. When working locally, you will be asked for your GitHub account name and your [personal access token, which you have to create on GitHub beforehand](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). In VS Code you can also use the *Source Control* tab on the left side of the screen.
 
 ## Exercise 2: Input and Output (7 points)
 

@@ -1,0 +1,14 @@
+{
+  "name": "IAM26 (g++, ROOT, Python)",
+  "image": "rootproject/root:6.38.00-ubuntu25.10",
+  "postCreateCommand": "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git python3-matplotlib python3-numpy python3-ipykernel",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  }
+}

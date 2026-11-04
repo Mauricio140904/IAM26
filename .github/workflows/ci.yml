@@ -73,3 +73,40 @@ jobs:
               !near($4, $1) { print "line " NR ": mean " $4 " != " $1; bad = 1 }
               !near($5, $2) && !near($5, $3) { print "line " NR ": variance " $5 " != " $2 " (or " $3 ")"; bad = 1 }
               END { if (NR != 26) { print "expected 26 lines, got " NR; bad = 1 }; exit bad }'
+
+  sheet-3-exercise-1-poisson:
+    runs-on: ubuntu-latest
+    env:
+      LC_ALL: C
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile poisson.cc
+        run: g++ -std=c++17 -Wall -Wextra -Werror poisson.cc -o poisson
+      - name: Check histogram and Poisson prediction
+        run: |
+          awk '{ print $1 + $2 }' data.txt > sums.txt
+          ./poisson
+          # expected: k, frequency of k in sums.txt and N * P(k, mu) with mu = mean of sums.txt
+          awk '{ c[$1]++; s += $1; n++ }
+            END { mu = s / n; p = exp(-mu)
+                  for (k = 0; k <= 10; k++) { print k, c[k] + 0, n * p; p *= mu / (k + 1) } }' sums.txt > expected.txt
+          cut -d' ' -f1,2 expected.txt > expected_hist.txt
+          diff -u expected_hist.txt <(awk '{ print $1, $2 }' hist.txt)
+          paste -d' ' expected.txt histpoi.txt |
+            awk 'function abs(y) { return y < 0 ? -y : y }
+              NF != 6 { print "line " NR ": expected three columns"; bad = 1; next }
+              $4 != $1 || $5 != $2 { print "line " NR ": " $4 " " $5 " != " $1 " " $2; bad = 1 }
+              abs($6 - $3) > 1e-3 * abs($3) + 1e-6 { print "line " NR ": prediction " $6 " != " $3; bad = 1 }
+              END { if (NR != 11) { print "expected 11 lines, got " NR; bad = 1 }; exit bad }'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Plot histogram and prediction
+        run: |
+          pip install matplotlib numpy
+          python plot_poisson.py histpoi.txt
+      - name: Upload plot
+        uses: actions/upload-artifact@v4
+        with:
+          name: sheet-3-plot
+          path: histpoi.png

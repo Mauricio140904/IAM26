@@ -56,6 +56,10 @@ int main() {
     std::cout << "Overall mean of means: " << overall_mean << "\n";
     std::cout << "Overall mean of variances: " << overall_variance << "\n";
 
+    double bessel_correction = (n > 1) ? (n / (n - 1.0)) : 1.0;
+    double corrected_variance = overall_variance * bessel_correction;
+    std::cout << "Corrected variance: " << corrected_variance << "\n";
+
     inputFile.close();
     meanInput.close();
     varianceInput.close();

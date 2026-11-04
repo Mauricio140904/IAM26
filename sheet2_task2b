@@ -1,0 +1,12 @@
+From sample.cc:
+Mean: 3.11538
+Variance: 2.73455
+
+From sample2.cc:
+Overall mean of means: 3.11539
+Overall mean of variances: 2.4359
+Corrected variance through Bessel's correction: 2.74038
+
+The variances differ by 0.89 (or 8/9)
+The corrected variance differs by 0.998
+

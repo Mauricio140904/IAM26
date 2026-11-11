@@ -24,7 +24,7 @@ int main() {
 
         double mean = sum / n;
         meanFile << mean << "\n";
-        SUM_MEAN += mean
+        SUM_MEAN += mean;
 
         double variance_sum = 0.0;
         for (int i = 0; i < n; ++i) {
@@ -32,7 +32,7 @@ int main() {
         }
         double variance = variance_sum / n;
         varianceFile << variance << "\n";
-        VAR_MEAN += variance
+        VAR_MEAN += variance;
     }
 
     meanFile << SUM_MEAN << "\n";

@@ -1,0 +1,7 @@
+1. Wenn die Zahlen unabhängig Poisson verteilt ist, dann ist ihre Summe auch Poisson verteilt.
+
+2. Mean und Variance sind wie in "sheet2_task2b.txt" zu sehen ist um knapp 0. 38 voneinander verschieden. <br>
+   Wir kommen auf einen z-wert von 1.3 und somit auf einen p-wert von 0.19. In diesem Falle ist die Differenz nicht signifikant. <br>
+   In dem Falle einer Poisson Verteilung ist es immer wichtiger den Mean zu berechnen, da für eine Poisson Verteilung mean und variance gleich sein sollen, da die Poisson Verteilung nur den Parameter $\mu$.
+
+3. Wir haben 9 Bins mit Werten, wobei 3 mehr als 1 Sigma vom Histogramm entfernt sind. Das widerspricht nicht der Erwartung.

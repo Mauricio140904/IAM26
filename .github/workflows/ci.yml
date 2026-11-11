@@ -110,3 +110,87 @@ jobs:
         with:
           name: sheet-3-plot
           path: histpoi.png
+
+  sheet-4-exercise-1-likelihood:
+    runs-on: ubuntu-latest
+    env:
+      LC_ALL: C
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile likelihood.cc
+        run: g++ -std=c++17 -Wall -Wextra -Werror likelihood.cc -o likelihood
+      - name: Run likelihood
+        run: |
+          awk '{ print $1 + $2 }' data.txt > sums.txt
+          ./likelihood | tee output.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check likelihood scans and likelihood ratio
+        run: |
+          python - <<'EOF'
+          import math, re, sys
+          k = [int(line) for line in open("sums.txt")]
+          N, mean = len(k), sum(k) / len(k)
+          def nll(mu):
+              if mu <= 0:
+                  return math.inf
+              return -2 * sum(x * math.log(mu) - mu - math.lgamma(x + 1) for x in k)
+          def near(a, b, rel, eps=0.0):
+              return abs(a - b) <= rel * abs(b) + eps
+          bad = []
+          numbers = [float(x) for x in re.findall(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?", open("output.txt").read())]
+          saturated = -2 * sum((x * math.log(x) - x if x > 0 else 0) - math.lgamma(x + 1) for x in k)
+          lam = nll(mean) - saturated
+          z = (lam - (N - 1)) / math.sqrt(2 * (N - 1))
+          for name, value, ok in [
+              ("likelihood L(mean)", math.exp(-nll(mean) / 2), lambda x, v: near(x, v, 1e-3)),
+              ("-2 ln Lambda", lam, lambda x, v: near(x, v, 0, 0.05)),
+              ("z", z, lambda x, v: near(x, v, 0, 0.003)),
+          ]:
+              if not any(ok(x, value) for x in numbers):
+                  bad.append(f"expected {name} = {value:.6g} not found in output")
+          def read(filename):
+              try:
+                  rows = [[float(v) for v in line.split()] for line in open(filename) if line.strip()]
+              except (OSError, ValueError) as e:
+                  bad.append(f"{filename}: {e}")
+                  return []
+              if any(len(r) != 2 for r in rows):
+                  bad.append(f"{filename}: expected two columns (mu and value) in each line")
+                  return []
+              mus = [r[0] for r in rows]
+              if not mus or min(mus) > 1e-9 or max(mus) < 6 - 1e-6:
+                  bad.append(f"{filename}: mu should range from 0 to 6")
+              elif any(b - a > 0.1 + 1e-6 for a, b in zip(sorted(mus), sorted(mus)[1:])):
+                  bad.append(f"{filename}: step size in mu larger than 0.1")
+              return rows
+          for mu, L in read("likelihood.txt"):
+              if not near(L, math.exp(-nll(mu) / 2), 1e-3, 1e-300):
+                  bad.append(f"likelihood.txt: mu = {mu}: {L} != {math.exp(-nll(mu) / 2):.6g}")
+          for filename, offset in [("nll.txt", 0.0), ("deltanll.txt", nll(mean))]:
+              for mu, value in read(filename):
+                  if mu <= 1e-9:
+                      continue  # infinite or nan at mu = 0
+                  expected = nll(mu) - offset
+                  if not math.isfinite(value):
+                      bad.append(f"{filename}: mu = {mu}: {value}, compute -2 ln L as a sum of logarithms")
+                  elif not near(value, expected, 1e-3, 1e-3):
+                      bad.append(f"{filename}: mu = {mu}: {value} != {expected:.6g}")
+          print("\n".join(bad[:20]) or "all checks passed")
+          sys.exit(1 if bad else 0)
+          EOF
+      - name: Plot likelihood scans
+        run: |
+          pip install matplotlib numpy
+          python plot_likelihood.py likelihood.txt 2.5 3.8
+          python plot_likelihood.py nll.txt
+          python plot_likelihood.py deltanll.txt 2.5 3.8 0 5
+      - name: Upload plots
+        uses: actions/upload-artifact@v4
+        with:
+          name: sheet-4-plots
+          path: |
+            likelihood.png
+            nll.png
+            deltanll.png

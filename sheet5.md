@@ -7,4 +7,5 @@ Bei einem pmin von 0.01 ist das beobachtete Verhalten des $\mu^+$ wie folgt: \\
 - Für 1 TeV werden aktiv Neutronen und Pb Kerne eine kinetische Energie zugeteilt bekommen, wobei es bei den Blei Kernen schwer zu sagen ist, ob diese auch aus dem Gitter geschlagen wurden. Dies ist durch $\gamma$'s passiert, die aus Bremsstrahlung hervor kommen. 
 
 ## Task b:
-Die Energie des $\mu^+$ ist beim Verlassen des Copper sheets 0.998 GeV. 1.005 vor dem Sheet 
+Die Energie des $\mu^+$ ist beim Verlassen des Copper sheets 0.998 GeV. Vor dem Sheet war die Energie 1.00557 GeV, also gilt $\Delta E \approx 7.57$ MeV. Für das Sheet mit Dicke $0.2$ cm ist $\frac{\Delta E}{\rho \Delta x} = 4.22$ $\frac{\text{MeV} \text{cm}^2}{\text{g}}$.
+ 

@@ -1,0 +1,27 @@
+{
+  // Dev container / Codespace for the Geant4 tutorial. The image is built from
+  // .devcontainer/Dockerfile by .github/workflows/devcontainer-image.yml.
+  // release.sh copies this file to the course repository as
+  // .devcontainer/geant4/devcontainer.json, with the tutorial folder renamed to geant4.
+  "name": "Geant4",
+  "image": "ghcr.io/stadie/geant4-tutorial:latest",
+  "runArgs": ["--platform=linux/amd64"],
+  "remoteUser": "ubuntu",
+  "hostRequirements": { "cpus": 4 },
+  // compile the tutorial code (ACLiC) once while the container is created,
+  // so the first notebook cell starts in seconds
+  "postCreateCommand": "cd geant4 && root -l -b -q 'run_g4.C(false)' > /tmp/geant4-precompile.log 2>&1 || echo 'precompiling the Geant4 tutorial failed, see /tmp/geant4-precompile.log'",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/venv/bin/python",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-vscode.cpptools"
+      ]
+    }
+  }
+}

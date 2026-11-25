@@ -1,0 +1,17 @@
+# conda environment for the Geant4 tutorial (TutorialApplication)
+#   conda env create -f environment.yml && conda activate g4tut
+# Full stack available for linux-64 and osx-64 (Apple Silicon: CONDA_SUBDIR=osx-64)
+name: g4tut
+channels:
+  - conda-forge
+dependencies:
+  - root
+  - geant4
+  - vmc
+  - geant4-vmc
+  - cmake
+  - make
+  - cxx-compiler
+  - ipykernel
+  - ipywidgets
+  - notebook

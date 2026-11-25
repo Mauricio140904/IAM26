@@ -1,0 +1,10 @@
+# ACLiC build products
+*.so
+*.d
+*_rdict.pcm
+*_ACLiC_*
+*.dSYM/
+.ipynb_checkpoints/
+__pycache__/
+# output of run_macro() in macros.ipynb
+*.log

@@ -3,6 +3,7 @@
 Exercises for the course *Instrumentation and Analysis Methods* (WiSe 26/27).
 Fork this repository, enable the workflows in the *Actions* tab of your fork, and use *Sync fork* to get new exercises.
 To work in your browser, open a *Codespace* on your fork (*Code* → *Codespaces*): it comes with g++, ROOT and Python with Matplotlib.
+The Geant4 exercises in [geant4/](geant4/README.md) need a second Codespace with the configuration *Geant4*.
 
 ## Exercise sheets
 
@@ -10,3 +11,4 @@ To work in your browser, open a *Codespace* on your fork (*Code* → *Codespaces
 - [Sheet 2](sheet_02.md)
 - [Sheet 3](sheet_03.md)
 - [Sheet 4](sheet_04.md)
+- [Sheet 5](sheet_05.md)
